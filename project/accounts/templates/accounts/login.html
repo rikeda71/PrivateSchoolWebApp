@@ -1,3 +1,5 @@
+{% extends 'accounts/base.html' %}
+{% block content %}
 <form action={% url 'accounts:login' %} enctype="multipart/form-data" method="POST">
     {% csrf_token %}
     {% for error in login_form.non_field_errors %}
@@ -15,3 +17,4 @@
 </form>
 
 <a href="/accounts/registration">新規登録</a>
+{% endblock %}

@@ -1,0 +1,12 @@
+{{ user.last_name }}  {{user.first_name}} さん
+
+会員登録手続き，ありがとうございます.
+
+下記URLよりサイトにアクセス後，会員登録完了となります．
+まだ，会員登録手続きは完了していませんので，ご注意ください．
+
+本登録用URL
+{{ protocol}}://{{ domain }}{% url 'accounts:user_register_complete' token %}
+
+1日以内に手続きを行わないと，会員手続きがやり直しになりますので，早めによろしくおねがいします．
+

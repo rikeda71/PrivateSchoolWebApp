@@ -3,7 +3,9 @@ from . import views
 
 app_name = 'accounts'
 urlpatterns = [
-    path('index', views.index, name='index'),
+    path('', views.index, name='index'),
     path('login', views.login_user, name='login'),
-    path('registration', views.registration_user, name='registration'),
+    path('registration/', views.UserRegister.as_view(), name='user_register'),
+    path('registration/done', views.UserRegisterDone.as_view(), name='user_register_done'),
+    path('registration/complete/<token>', views.UserRegisterComplete.as_view(), name='user_register_complete'),
 ]

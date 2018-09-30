@@ -1,18 +1,17 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm
 from .models import User
 
 
-class RegistrationForm(forms.ModelForm):
-    """
-    last_name = forms.CharField()
-    first_name = forms.CharField()
-    email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput(), min_length=8)
-    """
+class RegistrationForm(UserCreationForm):
+
+    last_name = forms.CharField(max_length=10, required=True)
+    first_name = forms.CharField(max_length=10, required=True)
 
     class Meta:
         model = User
-        fields = ['last_name', 'first_name', 'email', 'password']
+        fields = ['last_name', 'first_name', 'email']
         widgets = {
             'password': forms.PasswordInput()
         }
@@ -21,16 +20,13 @@ class RegistrationForm(forms.ModelForm):
         super().__init__(*args, **kargs)
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs['placeholder'] = field.label
 
 class LoginForm(forms.ModelForm):
-    """
-    email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput(), min_length=8)
-    """
 
     class Meta:
         model = User
-        fields = ['email', 'password']
+        fields = ('email', 'password')
         widgets = {
             'password': forms.PasswordInput()
         }
