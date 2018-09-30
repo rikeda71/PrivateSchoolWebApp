@@ -7,7 +7,7 @@ from accounts.forms import LoginForm
 
 
 def create_tmp_user(email, password):
-    User.objects.create_user(email=email, password=password)
+    User.objects.create_user(email=email, password=password, is_active=True)
 
 
 class LoginViewTests(TestCase):
