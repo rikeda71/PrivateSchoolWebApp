@@ -1,0 +1,17 @@
+<form action={% url 'accounts:login' %} enctype="multipart/form-data" method="POST">
+    {% csrf_token %}
+    {% for error in login_form.non_field_errors %}
+        <p>{{ error }}</p>
+    {% endfor %}
+    <table class="table table-bordered">
+        {% for field in login_form %}
+            <tr class="warning">
+                <td>{{ field.label_tag }}</td>
+                <td>{{ field }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <input class="btn" type="submit" value="submit">
+</form>
+
+<a href="/accounts/registration">新規登録</a>
