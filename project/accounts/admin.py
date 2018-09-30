@@ -20,7 +20,7 @@ class MyUserAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         (_('Personal info'), {'fields': ('last_name', 'first_name')}),
-        (_('Permissions'), {'fields': ('is_staff', 'is_superuser')}),
+        (_('Permissions'), {'fields': ('is_staff', 'is_superuser', 'is_active')}),
     )
 
     add_fieldsets = (
@@ -33,7 +33,7 @@ class MyUserAdmin(UserAdmin):
     form = MyUserChangeForm
     add_form = MyUserCreationForm
     list_display = ('email', 'last_name', 'first_name')
-    list_filter = ('is_staff', 'is_superuser')
+    list_filter = ('is_staff', 'is_superuser', 'is_active')
     search_fields = ('email', 'last_name', 'first_name')
     ordering = ('email',)
     filter_horizontal = ()
