@@ -4,7 +4,6 @@ from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
 from django.utils.translation import gettext_lazy as _
 from django.core.mail import send_mail
-import uuid as uuid_lib
 
 
 class UserManager(BaseUserManager):
@@ -21,16 +20,20 @@ class UserManager(BaseUserManager):
         return user
 
     def create_user(self, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_active', False)
         extra_fields.setdefault('is_staff', False)
         extra_fields.setdefault('is_superuser', False)
         return self._create_user(email, password, **extra_fields)
 
     def create_superuser(self, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_active', True)
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
 
         if extra_fields.get('is_staff') is not True:
             raise ValueError('Superuser must have is_staff=True.')
+        if extra_fields.get('is_active') is not True:
+            raise ValueError('Superuser must have is_active=True.')
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must have is_superuser=True.')
 
@@ -38,8 +41,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
 
-    uuid = models.UUIDField(default=uuid_lib.uuid4,
-                            primary_key=True, editable=False)
+    user_id = models.AutoField(primary_key=True, unique=True)
     email = models.EmailField(_('メールアドレス'),
                               max_length=128, unique=True,
                               help_text=_(
@@ -49,8 +51,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(_('名前'), max_length=10)
     last_name = models.CharField(_('名字'), max_length=10)
 
-    is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=False)
 
     objects = UserManager()
 
