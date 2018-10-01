@@ -1,25 +1,42 @@
 from django.conf import settings
-from django.shortcuts import render
-from django.shortcuts import redirect
 from django.contrib.sites.shortcuts import get_current_site
-from .models import User
-from accounts.forms import LoginForm
-from accounts.forms import RegistrationForm
-from accounts.forms import MyPasswordChangeForm
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
 from django.contrib.auth import login
-from django.views import generic
-from django.core.signing import dumps
-from django.core.signing import loads
-from django.template.loader import get_template
+from django.contrib.auth.views import (
+    LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView
+)
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.signing import dumps, loads
 from django.http import HttpResponseBadRequest
-from django.contrib.auth.views import PasswordChangeView
-from django.contrib.auth.views import PasswordChangeDoneView
+from django.shortcuts import render, redirect
+from django.template.loader import get_template
 from django.urls import reverse_lazy
+from django.views import generic
+from .models import User
+from .forms import (
+    LoginForm, RegistrationForm, MyPasswordChangeForm
+)
 
 
-def index(request):
-    return render(request, 'accounts/index.html')
+class Index(generic.TemplateView):
+    template_name = 'accounts/index.html'
+
+
+class Login(LoginView):
+    """
+    ログインビュー
+    """
+
+    form_class = LoginForm
+    template_name = 'accounts/login.html'
+
+
+class Logout(LoginRequiredMixin, LogoutView):
+    """
+    ログアウトページ
+    """
+
+    template_name = 'accounts/index.html'
 
 
 def login_user(request):

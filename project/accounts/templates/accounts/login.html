@@ -1,19 +1,21 @@
 {% extends 'accounts/base.html' %}
 {% block content %}
-<form action={% url 'accounts:login' %} enctype="multipart/form-data" method="POST">
-    {% csrf_token %}
-    {% for error in login_form.non_field_errors %}
-        <p>{{ error }}</p>
-    {% endfor %}
-    <table class="table table-bordered">
-        {% for field in login_form %}
-            <tr class="warning">
-                <td>{{ field.label_tag }}</td>
-                <td>{{ field }}</td>
-            </tr>
-        {% endfor %}
-    </table>
-    <input class="btn" type="submit" value="submit">
+<form action="" method="POST">
+    <div class="col-md-6 offset-md-3">
+        <div class="card">
+            <div class="card-body">
+                {{ form.non_field_errors }}
+                {% for field in form %}
+                    {{ field }}
+                    {{ field.errors }}
+                    <hr>
+                {% endfor %}
+                <button type="submit" class="btn btn-success btn-lg btn-block" >ログイン</button>
+                <input type="hidden" name="next" value="{{ next }}" />
+                {% csrf_token %}
+            </div>
+        </div>
+    </div>
 </form>
 
 <a href="/accounts/registration">新規登録</a>
