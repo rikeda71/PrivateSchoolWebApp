@@ -122,4 +122,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# email setting in develop environment
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Login environment
+LOGIN_URL = 'accounts:login'
+LOGIN_REDIRECT_URL = 'accounts:index'
