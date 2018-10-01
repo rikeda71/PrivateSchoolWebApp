@@ -1,7 +1,7 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.forms import (
+    UserCreationForm, AuthenticationForm, PasswordChangeForm
+)
 from .models import User
 
 
@@ -27,22 +27,21 @@ class RegistrationForm(UserCreationForm):
             field.widget.attrs['placeholder'] = field.label
 
 
-class LoginForm(forms.ModelForm):
+class LoginForm(AuthenticationForm):
     """
     ログインフォーム
     """
 
     class Meta:
-        model = User
-        fields = ('email', 'password')
         widgets = {
-            'password': forms.PasswordInput()
+            'email': forms.EmailInput()
         }
 
     def __init__(self, *args, **kargs):
         super().__init__(*args, **kargs)
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs['placeholder'] = field.label
 
 
 class MyPasswordChangeForm(PasswordChangeForm):
