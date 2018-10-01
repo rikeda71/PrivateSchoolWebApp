@@ -5,13 +5,17 @@ from django.contrib.sites.shortcuts import get_current_site
 from .models import User
 from accounts.forms import LoginForm
 from accounts.forms import RegistrationForm
+from accounts.forms import MyPasswordChangeForm
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
 from django.views import generic
 from django.core.signing import dumps
 from django.core.signing import loads
 from django.template.loader import get_template
-from django.http import Http404, HttpResponseBadRequest
+from django.http import HttpResponseBadRequest
+from django.contrib.auth.views import PasswordChangeView
+from django.contrib.auth.views import PasswordChangeDoneView
+from django.urls import reverse_lazy
 
 
 def index(request):
@@ -115,31 +119,19 @@ class UserRegisterComplete(generic.TemplateView):
         return HttpResponseBadRequest()
 
 
-def registration_user(request):
-    if request.method == 'POST':
-        registration_form = RegistrationForm(request.POST)
-        last_name = registration_form['last_name'].value()
-        first_name = registration_form['first_name'].value()
-        email = registration_form['email'].value()
-        password = registration_form['password'].value()
-        if len(password) < 8:
-            registration_form.add_error('password', 'パスワードは8文字以内で設定してください')
-        if len(first_name) == 0:
-            registration_form.add_error('first_name', '名前を入力してください')
-        if len(last_name) == 0:
-            registration_form.add_error('last_name', '名前を入力してください')
+class PasswordChange(PasswordChangeView):
+    """
+    パスワード変更ビュー
+    """
 
-        if registration_form.has_error('password') or\
-                registration_form.has_error('email') or\
-                registration_form.has_error('first_name') or\
-                registration_form.has_error('last_name'):
-            return render(request, 'accounts/registration.html', {'registration_form': registration_form})
+    form_class = MyPasswordChangeForm
+    success_url = reverse_lazy('accounts:password_change_done')
+    template_name = 'accounts/password_change.html'
 
-        user = User.objects.create_user(email=email,
-                                        password=password,
-                                        first_name=first_name,
-                                        last_name=last_name,)
-        return redirect('accounts:index')
-    else:
-        registration_form = RegistrationForm()
-    return render(request, 'accounts/registration.html', {'registration_form': registration_form})
+
+class PasswordChangeDone(PasswordChangeDoneView):
+    """
+    パスワード変更完了ビュー
+    """
+
+    template_name = 'accounts/password_change_done.html'
