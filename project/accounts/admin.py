@@ -11,10 +11,12 @@ class MyUserChangeForm(UserChangeForm):
         model = User
         fields = '__all__'
 
+
 class MyUserCreationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('email', )
+
 
 class MyUserAdmin(UserAdmin):
     fieldsets = (
@@ -37,5 +39,6 @@ class MyUserAdmin(UserAdmin):
     search_fields = ('email', 'last_name', 'first_name')
     ordering = ('email',)
     filter_horizontal = ()
+
 
 admin.site.register(User, MyUserAdmin)

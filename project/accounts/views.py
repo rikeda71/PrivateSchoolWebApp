@@ -71,11 +71,13 @@ class UserRegister(generic.CreateView):
         user.email_user(subject, message)
         return redirect('accounts:user_register_done')
 
+
 class UserRegisterDone(generic.TemplateView):
     """
     ユーザ仮登録をした
     """
     template_name = 'accounts/registration_done.html'
+
 
 class UserRegisterComplete(generic.TemplateView):
     """
@@ -83,7 +85,7 @@ class UserRegisterComplete(generic.TemplateView):
     """
 
     template_name = 'accounts/registration_complete.html'
-    timeout_seconds = getattr(settings, 'ACTIVATION_TIMEOUT_SECONDS', 60*60*24)
+    timeout_seconds = getattr(settings, 'ACTIVATION_TIMEOUT_SECONDS', 60 * 60 * 24)
 
     def get(self, request, **kargs):
         """

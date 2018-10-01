@@ -22,6 +22,7 @@ class RegistrationForm(UserCreationForm):
             field.widget.attrs['class'] = 'form-control'
             field.widget.attrs['placeholder'] = field.label
 
+
 class LoginForm(forms.ModelForm):
 
     class Meta:

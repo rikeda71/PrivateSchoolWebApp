@@ -39,14 +39,13 @@ class UserManager(BaseUserManager):
 
         return self._create_user(email, password, **extra_fields)
 
+
 class User(AbstractBaseUser, PermissionsMixin):
 
     user_id = models.AutoField(primary_key=True, unique=True)
     email = models.EmailField(_('メールアドレス'),
                               max_length=128, unique=True,
-                              help_text=_(
-                                '通知を受け取りたいメールアドレスを入力'
-                              ),
+                              help_text=_('通知を受け取りたいメールアドレスを入力'),
                               )
     first_name = models.CharField(_('名前'), max_length=10)
     last_name = models.CharField(_('名字'), max_length=10)

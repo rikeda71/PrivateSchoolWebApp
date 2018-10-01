@@ -1,7 +1,9 @@
 from django.test import TestCase
 from accounts.models import User
 
+
 class UserModelTests(TestCase):
+
     def test_is_empty(self):
         saved_users = User.objects.all()
         self.assertEqual(saved_users.count(), 0)
