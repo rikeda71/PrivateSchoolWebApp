@@ -32,11 +32,6 @@ class LoginForm(AuthenticationForm):
     ログインフォーム
     """
 
-    class Meta:
-        widgets = {
-            'email': forms.EmailInput()
-        }
-
     def __init__(self, *args, **kargs):
         super().__init__(*args, **kargs)
         for field in self.fields.values():

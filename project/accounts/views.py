@@ -39,23 +39,6 @@ class Logout(LoginRequiredMixin, LogoutView):
     template_name = 'accounts/index.html'
 
 
-def login_user(request):
-    if request.method == 'POST':
-        login_form = LoginForm(request.POST)
-        email = login_form['email'].value()
-        password = login_form['password'].value()
-        user = authenticate(request, email=email, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('accounts:index')
-        else:
-            login_form.add_error(None, 'メールアドレスかパスワードが間違っています')
-            return render(request, 'accounts/login.html', {'login_form': login_form})
-    else:
-        login_form = LoginForm()
-    return render(request, 'accounts/login.html', {'login_form': login_form})
-
-
 class UserRegister(generic.CreateView):
     """
     ユーザ仮登録
