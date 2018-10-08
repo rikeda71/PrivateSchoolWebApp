@@ -12,10 +12,12 @@ from django.shortcuts import render, redirect
 from django.template.loader import get_template
 from django.urls import reverse_lazy
 from django.views import generic
-from .models import User
+from .models import User, PDFFile, Shift
 from .forms import (
     LoginForm, RegistrationForm, MyPasswordChangeForm, UploadFileForm
 )
+from .pdftoshifts import shiftregistrations
+from project.settings import MEDIA_ROOT
 
 
 class Index(generic.TemplateView):
@@ -138,13 +140,18 @@ class PasswordChangeDone(PasswordChangeDoneView):
 
 
 def upload_file(request):
+    """
+    シフトアップロードビュー
+    """
+
     if request.method == 'POST':
         form = UploadFileForm(data=request.POST, files=request.FILES)
         if form.is_valid():
             # ファイル処理
-            form.save()
+            pdf = form.save()
+            shiftregistrations(pdf, MEDIA_ROOT + '/' + str(pdf.attach))
+            print(pdf.pk)
             return redirect('accounts:index')
-            pass
     else:
         form = UploadFileForm()
     return render(request, 'accounts/upload_pdf.html', {'form': form})
