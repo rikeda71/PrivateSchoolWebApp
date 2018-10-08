@@ -4,6 +4,8 @@ from django.contrib.auth.models import (
 )
 from django.utils.translation import gettext_lazy as _
 from django.core.mail import send_mail
+from django.core.validators import FileExtensionValidator
+import os
 
 
 class UserManager(BaseUserManager):
@@ -77,3 +79,18 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.last_name + ' ' + self.first_name
+
+
+class PDFFile(models.Model):
+
+    attach = models.FileField(
+        verbose_name='shift',
+        upload_to='uploads/%Y/%m/%d/',
+        validators=[FileExtensionValidator(['pdf', ])],
+    )
+
+    def __str__(self):
+        return self.pk
+
+    def get_filename(self):
+        return os.path.basename(self.attach.name)
