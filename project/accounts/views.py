@@ -14,7 +14,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 from .models import User
 from .forms import (
-    LoginForm, RegistrationForm, MyPasswordChangeForm
+    LoginForm, RegistrationForm, MyPasswordChangeForm, UploadFileForm
 )
 
 
@@ -135,3 +135,16 @@ class PasswordChangeDone(PasswordChangeDoneView):
     """
 
     template_name = 'accounts/password_change_done.html'
+
+
+def upload_file(request):
+    if request.method == 'POST':
+        form = UploadFileForm(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            # ファイル処理
+            form.save()
+            return redirect('accounts:index')
+            pass
+    else:
+        form = UploadFileForm()
+    return render(request, 'accounts/upload_pdf.html', {'form': form})

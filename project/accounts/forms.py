@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import (
     UserCreationForm, AuthenticationForm, PasswordChangeForm
 )
-from .models import User
+from .models import User, PDFFile
 
 
 class RegistrationForm(UserCreationForm):
@@ -48,3 +48,18 @@ class MyPasswordChangeForm(PasswordChangeForm):
         super().__init__(*args, **kargs)
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs['placeholder'] = field.label
+
+
+class UploadFileForm(forms.ModelForm):
+
+    class Meta:
+        model = PDFFile
+        fields = ['attach', ]
+
+    def __init__(self, *args, **kargs):
+        super().__init__(*args, **kargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs['accept'] = 'application/pdf'
+            field.widget.attrs['placeholder'] = field.label
