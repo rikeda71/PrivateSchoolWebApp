@@ -90,7 +90,18 @@ class PDFFile(models.Model):
     )
 
     def __str__(self):
-        return self.pk
+        return str(self.pk)
 
     def get_filename(self):
         return os.path.basename(self.attach.name)
+
+
+class Shift(models.Model):
+
+    pdf_id = models.ForeignKey(PDFFile, on_delete=models.CASCADE, related_name='pdf')
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
+    day = models.DateTimeField(_('日付'))
+    segment = models.CharField(_('コマ'), max_length=1)
+    student_name = models.CharField(_('生徒名'), max_length=10)
+    subject_name = models.CharField(_('教科名'), max_length=10)
+    student_grade = models.CharField(_('学年'), max_length=10)
