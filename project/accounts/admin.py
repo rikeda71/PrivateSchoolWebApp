@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth.forms import UserCreationForm
 from django.utils.translation import gettext_lazy as _
-from .models import User
+from .models import User, PDFFile
 
 
 class MyUserChangeForm(UserChangeForm):
@@ -42,3 +42,4 @@ class MyUserAdmin(UserAdmin):
 
 
 admin.site.register(User, MyUserAdmin)
+admin.site.register(PDFFile)
