@@ -7,12 +7,14 @@ from .models import User, PDFFile, Shift
 
 
 class MyUserChangeForm(UserChangeForm):
+
     class Meta:
         model = User
         fields = '__all__'
 
 
 class MyUserCreationForm(UserCreationForm):
+
     class Meta:
         model = User
         fields = ('email', )
@@ -42,10 +44,35 @@ class MyUserAdmin(UserAdmin):
 
 
 class PDFFileAdmin(admin.ModelAdmin):
-    list_display = ('id', 'attach')
-    list_display_links = ('id', )
+
+    field_sets = (
+        (None, {'fields': ('id', 'attach', 'created_at')}),
+    )
+
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('attach', 'created_at'),
+        }),
+    )
+
+    list_display = ('id', 'attach', 'created_at')
+    list_display_links = ('id', 'created_at')
+    search_fields = ('created_at', )
+
+
+class ShiftAdmin(admin.ModelAdmin):
+
+    field_sets = (
+        (None, {'fields': ('pdf_id', 'user_id', 'day')}),
+        (_('Personal info'), {'fields': ('segment', 'student_name', 'subject_name', 'student_grade')}),
+    )
+
+    list_display = ('user_id', 'day', 'segment', 'subject_name', 'student_grade')
+    list_display_links = ('user_id', 'day', 'segment')
+    search_fields = ('segment', 'student_name', 'subject_name', 'student_grade')
 
 
 admin.site.register(User, MyUserAdmin)
 admin.site.register(PDFFile, PDFFileAdmin)
-admin.site.register(Shift)
+admin.site.register(Shift, ShiftAdmin)
