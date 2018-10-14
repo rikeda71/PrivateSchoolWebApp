@@ -156,5 +156,9 @@ CELERY_BEAT_SCHEDULE = {
     'shiftregistrations': {
         'task': 'accounts.tasks.shiftregistrations',
         'schedule': crontab()
+    },
+    'delete_pdf': {
+        'task': 'accounts.tasks.delete_pdf',
+        'schedule': crontab(month_of_year='2-12/2')
     }
 }

@@ -21,6 +21,18 @@ segments = ['X', 'Y', 'Z', 'A', 'B', 'C', 'D']
 # ====================
 # call function
 # ====================
+@shared_task
+def delete_pdf():
+    """
+    delete pdf uploaded by leader
+    Also, shifts with uploaded pdf are deleted
+    """
+
+    today = datetime.datetime.now(JST)
+    threem_ago = (today - datetime.timedelta(weeks=12))
+    sixm_ago = (today - datetime.timedelta(weeks=16))
+    PDFFile.objects.filter(created_at__range=[sixm_ago, threem_ago]).delete()
+
 
 @shared_task
 def shiftregistrations(pdfpk: int, pdfpath: str):
