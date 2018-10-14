@@ -145,3 +145,4 @@ project/media/*
 !.gitkeep
 !test.pdf
 project/db-datadir
+celerybeat*

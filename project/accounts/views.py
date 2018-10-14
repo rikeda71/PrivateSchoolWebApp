@@ -16,7 +16,7 @@ from .models import User, PDFFile, Shift
 from .forms import (
     LoginForm, RegistrationForm, MyPasswordChangeForm, UploadFileForm
 )
-from .pdftoshifts import shiftregistrations
+from accounts.tasks import shiftregistrations
 from project.settings import MEDIA_ROOT
 
 
@@ -149,8 +149,8 @@ def upload_file(request):
         if form.is_valid():
             # ファイル処理
             pdf = form.save()
-            shiftregistrations(pdf, MEDIA_ROOT + '/' + str(pdf.attach))
-            print(pdf.pk)
+            shiftregistrations.delay(pdf.pk, MEDIA_ROOT + '/' + str(pdf.attach))
+            # shiftregistrations(pdf, MEDIA_ROOT + '/' + str(pdf.attach))
             return redirect('accounts:index')
     else:
         form = UploadFileForm()

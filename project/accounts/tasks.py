@@ -1,3 +1,4 @@
+from celery import shared_task
 import datetime
 import glob
 import re
@@ -8,7 +9,9 @@ import subprocess
 from copy import deepcopy
 from tabula import read_pdf
 from PIL import Image
-from accounts.models import User, Shift
+from accounts.models import (
+    User, Shift, PDFFile
+)
 
 
 JST = datetime.timezone(datetime.timedelta(hours=+9), 'JST')
@@ -19,18 +22,20 @@ segments = ['X', 'Y', 'Z', 'A', 'B', 'C', 'D']
 # call function
 # ====================
 
-def shiftregistrations(pdf, pdfpath: str):
+@shared_task
+def shiftregistrations(pdfpk: int, pdfpath: str):
     """
     pdf of shifts format -> shift registration
     """
 
-    shifts = pdf2shift(pdfpath)
-    days = dayimg2num(pdfpath)
+    pdf = PDFFile.objects.get(pk=pdfpk)
+    shifts = __pdf2shift(pdfpath)
+    days = __dayimg2num(pdfpath)
     daynum = 0
     before = 0
     for shift in shifts:
         daynum += 1 if segments.index(shift['segment']) < before else 0
-        shiftregistration_oneday(pdf, shift, days[daynum])
+        __shiftregistration_oneday(pdf, shift, days[daynum])
         before = segments.index(shift['segment'])
 
 # ====================
@@ -38,7 +43,7 @@ def shiftregistrations(pdf, pdfpath: str):
 # ====================
 
 
-def shiftregistration_oneday(pdf, shift: dict, day: datetime.datetime):
+def __shiftregistration_oneday(pdf, shift: dict, day: datetime.datetime):
     """
     regist shift to DB
     @param <dict> shift               : shift  of dict format
@@ -63,7 +68,7 @@ def shiftregistration_oneday(pdf, shift: dict, day: datetime.datetime):
             shift.save()
 
 
-def pdf2shift(pdfpath: str) -> list:
+def __pdf2shift(pdfpath: str) -> list:
     """
     pdf of shifts format -> shifts
     @param <str> pdfpath : pdf path
@@ -75,7 +80,7 @@ def pdf2shift(pdfpath: str) -> list:
     return shifts
 
 
-def dayimg2num(pdfpath: str) -> list:
+def __dayimg2num(pdfpath: str) -> list:
     """
     day images in pdf of shifts format -> day
     @param <str> pdfpath : pdf path
@@ -102,7 +107,7 @@ def get_digit_ocr_info(path: str) -> datetime.datetime:
 
     tools = pyocr.get_available_tools()
     tool = tools[0]
-    langs = tool.get_available_languages()
+    # langs = tool.get_available_languages()
     lang = 'jpn'
 
     digit_txt = tool.image_to_string(
@@ -149,7 +154,7 @@ def pd2shift(df: pd.DataFrame) -> dict:
             for elem in elems[1:]:
                 if type(elem) != str:
                     continue
-                s = elem.split(' ')
+                s = re.sub(r'\d+', '', elem).split()
                 name = s[0] + s[1]
                 class_ = s[2]
                 newstudent = deepcopy(student)
