@@ -29,12 +29,19 @@ services:
   celery:
     build: .
     command: celery -A project worker -l info
+    volumes:
+      - .:/code
     depends_on:
       - db
       - redis
   celery-beat:
     build: .
     command: celery -A project beat -l info
+    volumes:
+      - .:/code
     depends_on:
       - db
       - redis
+
+volumes:
+  db-datadir:
