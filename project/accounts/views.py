@@ -144,13 +144,14 @@ def upload_file(request):
     シフトアップロードビュー
     """
 
+    if not request.user.is_superuser:
+        return redirect('accounts:index')
     if request.method == 'POST':
         form = UploadFileForm(data=request.POST, files=request.FILES)
         if form.is_valid():
             # ファイル処理
             pdf = form.save()
             shiftregistrations.delay(pdf.pk, MEDIA_ROOT + '/' + str(pdf.attach))
-            # shiftregistrations(pdf, MEDIA_ROOT + '/' + str(pdf.attach))
             return redirect('accounts:index')
     else:
         form = UploadFileForm()
