@@ -76,14 +76,6 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-"""
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -92,6 +84,9 @@ DATABASES = {
         'PASSWORD': 'Password_django',
         'HOST': 'db',
         'PORT': 3306,
+        'TEST': {
+            'NAME': 'django_test',
+        },
         'OPTIONS': {
             'charset': 'utf8mb4',
         },

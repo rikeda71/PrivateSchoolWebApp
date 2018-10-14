@@ -8,12 +8,12 @@ from accounts.models import User
 
 
 class PasswordChangeViewTest(TestCase):
+
     def setUp(self):
         super().setUp()
         self.credentials = {'last_name': 'last', 'first_name': 'first',
                             'email': 'hoge@example.com', 'password': 'hogehoge'}
-        User.objects.create_user(**self.credentials)
-        user = User.objects.get(pk=1)
+        user = User.objects.create_user(**self.credentials)
         user.is_active = True
         user.save()
         url = reverse('accounts:password_change')
@@ -35,12 +35,12 @@ class PasswordChangeViewTest(TestCase):
 
 
 class PasswordChangeDoneViewTest(TestCase):
+
     def setUp(self):
         super().setUp()
         self.credentials = {'last_name': 'last', 'first_name': 'first',
                             'email': 'hoge@example.com', 'password': 'hogehoge'}
-        User.objects.create_user(**self.credentials)
-        user = User.objects.get(pk=1)
+        user = User.objects.create_user(**self.credentials)
         user.is_active = True
         user.save()
         url = reverse('accounts:password_change_done')
@@ -56,12 +56,12 @@ class PasswordChangeDoneViewTest(TestCase):
 
 
 class PasswordChangeFormTest(TestCase):
+
     def setUp(self):
         super().setUp()
         self.credentials = {'last_name': 'last', 'first_name': 'first',
                             'email': 'hoge@example.com', 'password': 'hogehoge'}
-        User.objects.create_user(**self.credentials)
-        user = User.objects.get(pk=1)
+        user = User.objects.create_user(**self.credentials)
         user.is_active = True
         user.save()
         self.form = PasswordChangeForm(user)
@@ -76,12 +76,12 @@ class PasswordChangeFormTest(TestCase):
 
 
 class PasswordChangeTest(TestCase):
+
     def setUp(self):
         super().setUp()
         self.credentials = {'last_name': 'last', 'first_name': 'first',
                             'email': 'hoge@example.com', 'password': 'hogehoge'}
-        User.objects.create_user(**self.credentials)
-        user = User.objects.get(pk=1)
+        user = User.objects.create_user(**self.credentials)
         user.is_active = True
         user.save()
         self.user = user

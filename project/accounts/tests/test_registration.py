@@ -8,6 +8,7 @@ from accounts.models import User
 
 
 class RegistrationViewTest(TestCase):
+
     def setUp(self):
         super().setUp()
         url = reverse('accounts:user_register')
@@ -28,6 +29,7 @@ class RegistrationViewTest(TestCase):
 
 
 class RegistrationFormTest(TestCase):
+
     def setUp(self):
         self.form = RegistrationForm()
 
@@ -45,12 +47,12 @@ class RegistrationFormTest(TestCase):
 
 
 class RegistrationTest(TestCase):
+
     def setUp(self):
         self.credentials = {'last_name': 'last', 'first_name': 'first',
                             'email': 'setup@example.com',
                             'password': 'hogehoge'}
-        User.objects.create_user(**self.credentials)
-        user = User.objects.get(pk=1)
+        user = User.objects.create_user(**self.credentials)
         user.is_active = True
         user.save()
 
@@ -61,7 +63,7 @@ class RegistrationTest(TestCase):
                                      'password1': 'hogehoge', 'password2': 'hogehoge'})
         self.assertEqual(302, response.status_code)
         self.assertRedirects(response, '/accounts/registration/done')
-        self.assertFalse(User.objects.get(pk=2).is_active)
+        self.assertFalse(User.objects.all()[1].is_active)
 
     def test_registration_is_invalid_with_missing_value(self):
         response = self.client.post(reverse('accounts:user_register'),

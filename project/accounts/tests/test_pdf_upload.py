@@ -8,6 +8,7 @@ import pdb
 
 
 class UploadViewTest(TestCase):
+
     def setUp(self):
         super().setUp()
         url = reverse('accounts:upload')
@@ -31,6 +32,7 @@ class UploadViewTest(TestCase):
 
 
 class UploadFormTest(TestCase):
+
     def setUp(self):
         super().setUp()
         self.form = UploadFileForm
