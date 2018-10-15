@@ -5,51 +5,92 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="keywords" content>
+        <meta http-equiv="X-UA-Compatible" content ="IE=edge" />
         <meta name="description" content="
-        This Application maneges shifts of private school."
-                                 >
-                                 <title>PrivateSchoolWebApp</title>
-                                 <link rel="stylesheet" type="text/css" href="{% static 'accounts/style.css' %}">
-                                 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+            This Application maneges shifts of private school."
+        >
+        <title>PrivateSchoolWebApp</title>
+        <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="{% static 'accounts/style.css' %}">
     </head>
     <body>
-        <nav class="navbar navbar-expand navbar-dark bg-dark">
-            <a class="navbar-brand" href="/accounts">PrivateSchoolWebApp</a>
+        <div class="bmd-layout-container bmd-drawer-f-l bmd-drawer-overlay">
+            <header class="bmd-layout-header">
+                <div class="navbar navbar-light bg-faded">
 
-            <div class="collapse navbar-collapse" id="navbarsExample02">
-                <ul class="navbar-nav mr-auto">
+                    <button type="button" class="navbar-toggler" data-toggle="drawer" data-target="#dw-s1" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle drawer</span>
+                        <i class="navbar-toggler-icon"></i>
+                    </button>
+                    <div class="d-none d-lg-block d-md-block">
+                        <!-- dark -->
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="/accounts/">Top</a>
+                            </li>
+                            {% if user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/accounts/logout">ログアウト</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/accounts/password_change">パスワード変更</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/accounts/month/{% now "o/n" %}">シフト確認</a>
+                            </li>
+                            {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/accounts/login">ログイン</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/accounts/registration">ユーザ登録</a>
+                            </li>
+                            {% endif %}
+                            {% if user.is_superuser %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="accounts/upload">シフト登録</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">PrivateSchoolWepApp</li>
+                        </ul>
+                    </div>
+            </header>
+            <div id="dw-s1" class="bmd-layout-drawer bg-faded">
+                <header>
+                    <a class="navbar-brand">Menu</a>
+                </header>
+                <ul class="list-group">
+                    <a class="list-group-item" href="/accounts/">Top</a>
                     {% if user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="/accounts/logout">ログアウト </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/accounts/password_change">パスワード変更</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/accounts/month/{% now "o/n" %}">シフト確認</a>
-                        </li>
+                    <a class="list-group-item" href="/accounts/logout">ログアウト</a>
+                    <a class="list-group-item" href="/accounts/password_change">パスワード変更</a>
+                    <a class="list-group-item" href="/accounts/month/{% now "o/n" %}">シフト確認</a>
                     {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="/accounts/login">ログイン </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/accounts/registration">ユーザ登録</a>
-                        </li>
+                    <a class="list-group-item" href="/accounts/login">ログイン</a>
+                    <a class="list-group-item" href="/accounts/registration">ユーザ登録</a>
                     {% endif %}
                     {% if user.is_superuser %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="/accounts/upload">シフト登録</a>
-                        </li>
+                    <a class="list-group-item" href="/accounts/upload">シフト登録</a>
                     {% endif %}
                 </ul>
             </div>
-        </nav>
-        {% if user.is_authenticated %}
-            <h3 style="margin-top: 0.5em">{{ user.last_name }} {{ user.first_name }} 先生のページ</h3>
-        {% endif %}
-        {% block content %}{% endblock %}
+            <main class="bmd-layout-content center">
+                <div class="container-fluid">
+                    {% if user.is_authenticated %}
+                    <h3 style="margin-top: 0.5em">{{ user.last_name }} {{ user.first_name }} 先生のページ</h3>
+                    {% endif %}
+                    {% block content %}{% endblock %}
+                </div>
+            </main>
+                </div>
+        </div>
+        </div>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
+        <script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
     </body>
 </html>

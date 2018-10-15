@@ -2,7 +2,7 @@
 {% block content %}
 
 <h1 class="h3 mb-3 font-weight-normal text-center">シフト確認</h1>
-<div class="container-fluid mt-3">
+<div class="mt-3">
     <a href="{% url 'accounts:month' month.previous.year month.previous.month %}">前月</a>
     {{ month.current | date:"Y年m月" }}
     <a href="{% url 'accounts:month' month.next.year month.next.month %}">次月</a>
@@ -19,12 +19,12 @@
             <tr>
                 {% for day, shift in week %}
                 {% if shift != "" %}
-                    <td class="table-primary", style="width: 90px">
+                    <td class="table-primary col-xs-7", style="width: 13vw">
                 {% else %}
-                    <td style="width: 90px">
+                    <td class="col-xs-7" style="width: 13vw">
                 {% endif %}
                     {% if month.current.month != day.month %}
-                        {{ day | date:"m/d" }}
+                    <small>{{ day | date:"m/j" }}</small>
                     {% else %}
                         {{ day.day }}
                     {% endif %}

@@ -1,13 +1,5 @@
-.nav>li {
-    float: left;
-    display: inline-block;
-}
-.navbar-nav {
-    margin: 0;
-}
-.navbar-nav>li>a {
-    padding-top: 14.5px;
-    padding-bottom: 14.5px;
+.selector-for-some-widget {
+  box-sizing: content-box;
 }
 
 form {
@@ -17,7 +9,7 @@ form {
 
 .form-sign {
   width: 100%;
-  max-width: 420px;
+  max-width: 90%;
   padding: 15px;
   margin: auto;
 }
@@ -28,10 +20,19 @@ form {
   width: 400px;
 }
 
+.form-group {
+  margin-bottom: 1rem;
+  max-width: 90vw;
+}
+
 .form-control {
   margin-bottom: 1rem;
 }
 
 h3 {
   margin-top: 30px;
+}
+
+.btn {
+  max-width: 90vw;
 }
