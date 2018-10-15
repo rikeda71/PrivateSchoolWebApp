@@ -219,7 +219,28 @@ class MonthCalendarMixin(BaseCalendarMixin):
     def get_month_days(self, date):
         return self._calendar.monthdatescalendar(date.year, date.month)
 
-    def get_month_calendar(self):
+    def get_month_shifts(self, days, user):
+        """
+        return shifts in days
+        """
+
+        day_with_shifts = []
+        for week in days:
+            week_shifts = []
+            for day in week:
+                lookup = {'day': day, 'user_id': user}
+                queryset = Shift.objects.filter(**lookup)
+                segments = list(sorted(set([q.segment for q in queryset])))
+                # シフト順の調整
+                for s in ['Z', 'Y', 'X']:
+                    if s in segments:
+                        segments.remove(s)
+                        segments.insert(0, s)
+                week_shifts.append((day, "".join(segments)))
+            day_with_shifts.append(week_shifts)
+        return day_with_shifts
+
+    def get_month_calendar(self, user):
         """
         return month calendar information
         """
@@ -234,6 +255,7 @@ class MonthCalendarMixin(BaseCalendarMixin):
             'next': self.get_next_month(current_month),
             'week_names': self.get_week_names(),
         }
+        calendar_data['days'] = self.get_month_shifts(calendar_data['days'], user)
         return calendar_data
 
 
@@ -244,7 +266,11 @@ class MonthCalendar(MonthCalendarMixin, generic.TemplateView):
 
     template_name = 'accounts/month.html'
 
-    def get_context_data(self, **kargs):
+    def get_context_data(self, user, **kargs):
         context = super().get_context_data(**kargs)
-        context['month'] = self.get_month_calendar()
+        context['month'] = self.get_month_calendar(user)
         return context
+
+    def get(self, request, **kargs):
+        context = self.get_context_data(user=request.user)
+        return self.render_to_response(context)

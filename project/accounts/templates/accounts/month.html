@@ -16,7 +16,7 @@
         <tbody>
             {% for week in month.days %}
             <tr>
-                {% for day in week %}
+                {% for day, shift in week %}
                 {% if month.now == day %}
                 <td class="table-success", style="width: 90px">
                     {% else %}
@@ -27,6 +27,7 @@
                         {% else %}
                         {{ day.day }}
                         {% endif %}
+                        {{ shift }}
                     </td>
                     {% endfor %}
             </tr>
