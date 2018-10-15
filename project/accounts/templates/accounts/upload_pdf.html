@@ -1,7 +1,7 @@
 {% extends 'accounts/base.html' %}
 {% block content %}
 
-<h1>upload page</h1>
+<h1 class="h3 mb-3 font-weight-normal text-center">シフトアップロード</h1>
 <form method="POST" enctype="multipart/form-data">
     {{ form.non_field_errors }}
     {% for field in form %}

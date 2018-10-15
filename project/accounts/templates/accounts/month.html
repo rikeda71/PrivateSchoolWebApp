@@ -1,6 +1,7 @@
 {% extends "accounts/base.html" %}
 {% block content %}
 
+<h1 class="h3 mb-3 font-weight-normal text-center">シフト確認</h1>
 <div class="container-fluid mt-3">
     <a href="{% url 'accounts:month' month.previous.year month.previous.month %}">前月</a>
     {{ month.current | date:"Y年m月" }}
@@ -17,19 +18,19 @@
             {% for week in month.days %}
             <tr>
                 {% for day, shift in week %}
-                {% if month.now == day %}
-                <td class="table-success", style="width: 90px">
-                    {% else %}
+                {% if shift != "" %}
+                    <td class="table-primary", style="width: 90px">
+                {% else %}
                     <td style="width: 90px">
-                        {% endif %}
-                        {% if month.current.month != day.month %}
+                {% endif %}
+                    {% if month.current.month != day.month %}
                         {{ day | date:"m/d" }}
-                        {% else %}
+                    {% else %}
                         {{ day.day }}
-                        {% endif %}
-                        {{ shift }}
-                    </td>
-                    {% endfor %}
+                    {% endif %}
+                    {{ shift }}
+                </td>
+                {% endfor %}
             </tr>
             {% endfor %}
         </tbody>

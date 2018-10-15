@@ -28,7 +28,7 @@ class RegistrationForm(UserCreationForm):
                                 ))
     password2 = forms.CharField(max_length=30, required=True,
                                 widget=forms.PasswordInput(
-                                    attrs={'placeholder': 'パスワードの確認'}
+                                    attrs={'placeholder': 'パスワード(確認用)'}
                                 ))
 
     class Meta:
