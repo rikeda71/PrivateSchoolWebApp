@@ -1,0 +1,29 @@
+.nav>li {
+    float: left;
+    display: inline-block;
+}
+.navbar-nav {
+    margin: 0;
+}
+.navbar-nav>li>a {
+    padding-top: 14.5px;
+    padding-bottom: 14.5px;
+}
+
+form {
+  display: block;
+  margin-top:3em;
+}
+
+.form-sign {
+  width: 100%;
+  max-width: 420px;
+  padding: 15px;
+  margin: auto;
+}
+
+.form-label-group {
+  position: relative;
+  margin-bottom: 1rem;
+  width: 400px;
+}
