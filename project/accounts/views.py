@@ -1,3 +1,6 @@
+import calendar
+from collections import deque
+import datetime
 from django.conf import settings
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth import authenticate, login
@@ -156,3 +159,92 @@ def upload_file(request):
     else:
         form = UploadFileForm()
     return render(request, 'accounts/upload_pdf.html', {'form': form})
+
+
+class BaseCalendarMixin:
+    """
+    Calendar Mixin super class
+    """
+
+    first_weekday = 6
+    week_names = ['月', '火', '水', '木', '金', '土', '日']
+
+    def setup(self):
+        self._calendar = calendar.Calendar(self.first_weekday)
+
+    def get_week_names(self):
+        week_names = deque(self.week_names)
+        week_names.rotate(-self.first_weekday)
+        return week_names
+
+
+class MonthCalendarMixin(BaseCalendarMixin):
+    """
+    Month Calendar Mixin
+    """
+
+    @staticmethod
+    def get_previous_month(date):
+        """
+        return previous month
+        """
+
+        if date.month == 1:
+            return date.replace(year=date.year - 1, month=12, day=1)
+        return date.replace(month=date.month - 1, day=1)
+
+    @staticmethod
+    def get_next_month(date):
+        """
+        return next month
+        """
+
+        if date.month == 12:
+            return date.replace(year=date.year + 1, month=1, day=1)
+        return date.replace(month=date.month + 1, day=1)
+
+    def get_current_month(self):
+        """
+        return current month
+        """
+
+        month = self.kwargs.get('month')
+        year = self.kwargs.get('year')
+        if month and year:
+            month = datetime.date(year=int(year), month=int(month), day=1)
+        else:
+            month = datetime.date.today().replace(day=1)
+        return month
+
+    def get_month_days(self, date):
+        return self._calendar.monthdatescalendar(date.year, date.month)
+
+    def get_month_calendar(self):
+        """
+        return month calendar information
+        """
+
+        self.setup()
+        current_month = self.get_current_month()
+        calendar_data = {
+            'now': datetime.date.today(),
+            'days': self.get_month_days(current_month),
+            'current': current_month,
+            'previous': self.get_previous_month(current_month),
+            'next': self.get_next_month(current_month),
+            'week_names': self.get_week_names(),
+        }
+        return calendar_data
+
+
+class MonthCalendar(MonthCalendarMixin, generic.TemplateView):
+    """
+    Month Calendar View
+    """
+
+    template_name = 'accounts/month.html'
+
+    def get_context_data(self, **kargs):
+        context = super().get_context_data(**kargs)
+        context['month'] = self.get_month_calendar()
+        return context

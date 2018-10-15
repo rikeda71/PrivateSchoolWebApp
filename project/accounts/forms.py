@@ -10,12 +10,30 @@ class RegistrationForm(UserCreationForm):
     ユーザ登録フォーム
     """
 
-    last_name = forms.CharField(max_length=10, required=True)
-    first_name = forms.CharField(max_length=10, required=True)
+    last_name = forms.CharField(max_length=10, required=True,
+                                widget=forms.TextInput(
+                                    attrs={'placeholder': '名字'}
+                                ))
+    first_name = forms.CharField(max_length=10, required=True,
+                                 widget=forms.TextInput(
+                                     attrs={'placeholder': '名前'}
+                                 ))
+    email = forms.EmailField(max_length=50, required=True,
+                             widget=forms.EmailInput(
+                                 attrs={'placeholder': 'メールアドレス'}
+                             ))
+    password1 = forms.CharField(max_length=30, required=True,
+                                widget=forms.PasswordInput(
+                                    attrs={'placeholder': 'パスワード'}
+                                ))
+    password2 = forms.CharField(max_length=30, required=True,
+                                widget=forms.PasswordInput(
+                                    attrs={'placeholder': 'パスワードの確認'}
+                                ))
 
     class Meta:
         model = User
-        fields = ['last_name', 'first_name', 'email']
+        fields = ('last_name', 'first_name', 'email')
         widgets = {
             'password': forms.PasswordInput()
         }
@@ -24,7 +42,7 @@ class RegistrationForm(UserCreationForm):
         super().__init__(*args, **kargs)
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
-            field.widget.attrs['placeholder'] = field.label
+            # field.widget.attrs['placeholder'] = field.label
 
 
 class LoginForm(AuthenticationForm):

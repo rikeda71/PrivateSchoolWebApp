@@ -133,6 +133,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # email setting in develop environment
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -140,6 +141,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # Login environment
 LOGIN_URL = 'accounts:login'
 LOGIN_REDIRECT_URL = 'accounts:index'
+LOGOUT_REDIRECT_URL = 'accounts:index'
 
 # Media environment
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
