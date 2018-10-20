@@ -42,7 +42,6 @@ class RegistrationForm(UserCreationForm):
         super().__init__(*args, **kargs)
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
-            # field.widget.attrs['placeholder'] = field.label
 
 
 class LoginForm(AuthenticationForm):
@@ -78,6 +77,5 @@ class UploadFileForm(forms.ModelForm):
     def __init__(self, *args, **kargs):
         super().__init__(*args, **kargs)
         for field in self.fields.values():
-            field.widget.attrs['class'] = 'form-control'
             field.widget.attrs['accept'] = 'application/pdf'
-            field.widget.attrs['placeholder'] = field.label
+            field.widget.attrs['style'] = 'display:none'

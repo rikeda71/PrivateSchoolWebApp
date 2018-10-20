@@ -2,6 +2,7 @@ import calendar
 from collections import deque
 import datetime
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import login
@@ -34,6 +35,13 @@ class Login(LoginView):
 
     form_class = LoginForm
     template_name = 'accounts/login.html'
+
+    def form_valid(self, form):
+        result = super().form_valid(form)
+        messages.success(
+            self.request, 'ログインしました'
+        )
+        return result
 
 
 class Logout(LoginRequiredMixin, LogoutView):
@@ -155,6 +163,9 @@ def upload_file(request):
             # ファイル処理
             pdf = form.save()
             shiftregistrations.delay(pdf.pk, MEDIA_ROOT + '/' + str(pdf.attach))
+            messages.success(
+                request, 'シフトを登録しました．反映にしばらく時間がかかります'
+            )
             return redirect('accounts:index')
     else:
         form = UploadFileForm()
