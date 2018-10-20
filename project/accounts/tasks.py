@@ -43,6 +43,8 @@ def shiftregistrations(pdfpk: int, pdfpath: str):
     pdf = PDFFile.objects.get(pk=pdfpk)
     shifts = __pdf2shift(pdfpath)
     days = __dayimg2num(pdfpath)
+    for day in days:
+        __shift_delete_at_day(day)
     daynum = 0
     before = 0
     for shift in shifts:
@@ -53,6 +55,10 @@ def shiftregistrations(pdfpk: int, pdfpath: str):
 # ====================
 # support function
 # ====================
+
+
+def __shift_delete_at_day(day):
+    Shift.objects.filter(day=day).delete()
 
 
 def __shiftregistration_oneday(pdf, shift: dict, day: datetime.datetime):
@@ -119,7 +125,6 @@ def get_digit_ocr_info(path: str) -> datetime.datetime:
 
     tools = pyocr.get_available_tools()
     tool = tools[0]
-    # langs = tool.get_available_languages()
     lang = 'jpn'
 
     digit_txt = tool.image_to_string(
