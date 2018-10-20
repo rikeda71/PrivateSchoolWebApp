@@ -1,6 +1,37 @@
 {% extends 'accounts/base.html' %}
 {% block content %}
 
-<h1>index page</h1>
+<section class="jumbotron text-center">
+    <div class="container">
+        <h3 class="jumbotron-heading">PrivateSchoolWebApp</h3>
+        <p class="lead text-muted">
+        ~ 塾業務効率化のためのアプリ ~</p>
+        <p>
+        {% if user.is_authenticated %}
+        <a href="/accounts/logout/" class="btn btn-danger my-2">Logout</a>
+        {% else %}
+        <a href="/accounts/login/" class="btn btn-success my-2">Login</a>
+        <a href="/accounts/registration/" class="btn btn-secondary my-2">新規登録</a>
+        {% endif %}
+        </p>
+    </div>
+</section>
+
+<div class="container">
+    <div class="row">
+          <div class="col-md-4 bg-light mx-2 py-2">
+            <h4>シフト確認</h4>
+            <p>カレンダー形式でシフトの確認ができます．カレンダー上で日付を選択すると，担当するコマの詳細情報も確認できます．</p>
+            <p><a class="btn btn-secondary" href="/accounts/month/{% now "o/n" %}" role="button">View details »</a></p>
+          </div>
+          {% if user.is_superuser %}
+          <div class="col-md-4 bg-light mx-2">
+            <h4>シフトアップロード(室長限定)</h4>
+            <p>pdf形式のシフトをアップロードすることで，自動で講師の方々のカレンダーにシフトを登録することができます．また，登録したシフトを講師の方々に通知することもできます．</p>
+            <p><a class="btn btn-secondary" href="/accounts/upload/" role="button">View details »</a></p>
+          </div>
+          {% endif %}
+    </div>
+</div>
 
 {% endblock %}

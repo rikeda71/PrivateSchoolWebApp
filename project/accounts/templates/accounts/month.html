@@ -4,7 +4,7 @@
 <h1 class="h3 mb-3 font-weight-normal text-center">シフト確認</h1>
 <div class="mt-3">
     <a href="{% url 'accounts:month' month.previous.year month.previous.month %}">前月</a>
-    {{ month.current | date:"Y年m月" }}
+    {{ month.current | date:"Y年n月" }}
     <a href="{% url 'accounts:month' month.next.year month.next.month %}">次月</a>
     <table class="table">
         <thead>
@@ -24,7 +24,7 @@
                     <td class="col-xs-7" style="width: 13vw">
                 {% endif %}
                     {% if month.current.month != day.month %}
-                    <small>{{ day | date:"m/j" }}</small>
+                    <small>{{ day | date:"n/j" }}</small>
                     {% else %}
                         {{ day.day }}
                     {% endif %}

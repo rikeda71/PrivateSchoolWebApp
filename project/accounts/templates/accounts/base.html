@@ -48,7 +48,7 @@
                             {% endif %}
                             {% if user.is_superuser %}
                             <li class="nav-item">
-                                <a class="nav-link" href="accounts/upload">シフト登録</a>
+                                <a class="nav-link" href="/accounts/upload">シフトアップロード</a>
                             </li>
                             {% endif %}
                         </ul>
@@ -73,12 +73,17 @@
                     <a class="list-group-item" href="/accounts/registration">ユーザ登録</a>
                     {% endif %}
                     {% if user.is_superuser %}
-                    <a class="list-group-item" href="/accounts/upload">シフト登録</a>
+                    <a class="list-group-item" href="/accounts/upload">シフトアップロード</a>
                     {% endif %}
                 </ul>
             </div>
             <main class="bmd-layout-content center">
                 <div class="container-fluid">
+                    {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert alert-success">{{ message }}</div>
+                        {% endfor %}
+                        {% endif %}
                     {% if user.is_authenticated %}
                     <h3 style="margin-top: 0.5em">{{ user.last_name }} {{ user.first_name }} 先生のページ</h3>
                     {% endif %}
@@ -88,9 +93,10 @@
                 </div>
         </div>
         </div>
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>
         <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
+
         <script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
     </body>
 </html>
