@@ -277,11 +277,37 @@ class MonthCalendar(MonthCalendarMixin, generic.TemplateView):
 
     template_name = 'accounts/month.html'
 
-    def get_context_data(self, user, **kargs):
-        context = super().get_context_data(**kargs)
+    def get_context_data(self, user, **kwargs):
+        context = super().get_context_data(**kwargs)
         context['month'] = self.get_month_calendar(user)
         return context
 
-    def get(self, request, **kargs):
+    def get(self, request, **kwargs):
         context = self.get_context_data(user=request.user)
+        return self.render_to_response(context)
+
+
+class ShiftView(generic.TemplateView):
+    """
+    Shift View in a day
+    """
+
+    template_name = 'accounts/shift.html'
+
+    def get_context_data(self, user, **kwargs):
+        context = super().get_context_data(**kwargs)
+        year = kwargs.get('year')
+        month = kwargs.get('month')
+        day = kwargs.get('day')
+        segment = ('X', 'Y', 'Z', 'A', 'B', 'C', 'D')
+        context['shift'] = {}
+        for s in segment:
+            shifts = Shift.objects.filter(user_id=user, day=datetime.date(year=year, month=month, day=day), segment=s)
+            if len(shifts) > 0:
+                context['shift'][s] = shifts
+        return context
+
+    def get(self, request, **kwargs):
+        context = self.get_context_data(user=request.user, **kwargs)
+        print(context)
         return self.render_to_response(context)

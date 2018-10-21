@@ -15,5 +15,6 @@ urlpatterns = [
     path('password_change/', login_required(views.PasswordChange.as_view()), name='password_change'),
     path('password_change/done/', views.PasswordChangeDone.as_view(), name='password_change_done'),
     path('upload/', views.upload_file, name='upload'),
-    path('month/<int:year>/<int:month>/', login_required(views.MonthCalendar.as_view()), name='month')
+    path('month/<int:year>/<int:month>/', login_required(views.MonthCalendar.as_view()), name='month'),
+    path('shift/<int:year>/<int:month>/<int:day>/', login_required(views.ShiftView.as_view()), name='shift'),
 ]
